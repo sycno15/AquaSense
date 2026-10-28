@@ -1,114 +1,147 @@
 # AquaSense — Water Quality & Potability Prediction
 
-AquaSense is an educational machine-learning project for exploring water-quality measurements and studying how different models classify water samples as potable or non-potable. It includes data exploration, model evaluation, clustering, a regression baseline, and an interactive Gradio dashboard.
+**Machine Learning Project | 2026–2027**  
+**Ramdeobaba University, Nagpur | Department of Computer Science & Engineering**  
+**Faculty Guide:** Prof. Sweta Jain  
 
-> **Note:** AquaSense is for learning and experimentation. A model prediction cannot confirm that water is safe to drink. Drinking-water safety must be established through suitable laboratory testing and applicable standards.
+---
 
-## Project features
+## 🌊 Overview
 
-- Explore the dataset, including label distribution, missing values, feature distributions, and correlations.
-- Prepare and validate the data, handle missing feature values with median imputation, and create a stratified train/test split.
-- Train and compare six classification models:
-  - Logistic Regression
-  - Support Vector Machine (RBF kernel)
-  - K-Nearest Neighbors
-  - Decision Tree
-  - Linear Discriminant Analysis
-  - Quadratic Discriminant Analysis
-- Evaluate classifiers with accuracy, precision, recall, F1-score, balanced accuracy, ROC-AUC, confusion matrices, ROC curves, and 5-fold cross-validation.
-- Experiment with classification thresholds and review their effect on evaluation metrics.
-- Explore samples with K-Means clustering and PCA visualizations.
-- Review a Linear Regression baseline separately from the classification models.
-- Inspect model coefficients or feature influence and run what-if sample experiments.
-- Use the interactive dashboard to explore the project through 11 pages.
-- Export evaluation tables and the prepared dataset as CSV files.
+**AquaSense** is an end-to-end educational machine learning system designed to analyze physical and chemical water quality parameters and predict water potability. The project covers data cleaning, exploratory data analysis, pipeline-based preprocessing, training and tuning seven distinct classification algorithms, cross-validation, threshold sensitivity analysis, unsupervised clustering, model explainability, and an interactive 12-page dashboard built with Gradio and Plotly.
 
-Random Forest, Extra Trees, and Gradient Boosting are not part of the selected six classifiers.
+> [!WARNING]
+> **Educational & Experimental Disclaimer:** AquaSense is developed for academic study and research benchmarking. Model predictions are based on statistical patterns within the dataset and must **never** be used as a substitute for certified laboratory testing, biochemical assays, or official drinking-water quality standards (WHO / EPA).
 
-## Dataset
+---
 
-The notebook expects a CSV file named `water_potability.csv` with these columns:
+## 👥 Project Team
 
-| Column | Description |
-|---|---|
-| `ph` | pH measurement |
-| `Hardness` | Water hardness |
-| `Solids` | Total dissolved solids measurement |
-| `Chloramines` | Chloramines measurement |
-| `Sulfate` | Sulfate measurement |
-| `Conductivity` | Electrical conductivity measurement |
-| `Organic_carbon` | Organic carbon measurement |
-| `Trihalomethanes` | Trihalomethanes measurement |
-| `Turbidity` | Turbidity measurement |
-| `Potability` | Target label: `1` for potable and `0` for non-potable |
+| Name | Roll Number | Department |
+|---|---|---|
+| **Kirtikumar Mishra** | 12 | Computer Science & Engineering |
+| **Vansh Mahalle** | 24 | Computer Science & Engineering |
+| **Soumya Gawande** | 46 | Computer Science & Engineering |
+| **Archit Deshpande** | 55 | Computer Science & Engineering |
 
-The notebook checks that the required columns are present, converts values to numeric form, removes rows without a valid target label, and imputes missing feature measurements inside model pipelines where applicable.
+---
 
-## Technology stack
+## ✨ Key Features
 
-- Python
-- Jupyter Notebook / Google Colab
-- pandas and NumPy for data handling
-- scikit-learn for machine learning and evaluation
-- Matplotlib and Seaborn for plotting support
-- Plotly for interactive charts
-- Gradio for the interactive dashboard
+- **Robust Data Preprocessing:** Automated schema validation, median imputation via `SimpleImputer` within scikit-learn pipelines to prevent data leakage, and feature scaling with `StandardScaler`.
+- **7 Classification Algorithms:**
+  1. **Logistic Regression** (L2-regularized linear classifier)
+  2. **Support Vector Machine (SVM)** (Non-linear RBF kernel with probability calibration)
+  3. **K-Nearest Neighbors (KNN)** (Distance-weighted local neighbor classifier)
+  4. **Decision Tree** (Gini-impurity tree classifier)
+  5. **Random Forest** (Ensemble bagging classifier optimized with `GridSearchCV`)
+  6. **Linear Discriminant Analysis (LDA)** (Generative linear decision boundary)
+  7. **Quadratic Discriminant Analysis (QDA)** (Quadrative class-covariance decision surface)
+- **Rigorous Evaluation:**
+  - Evaluated on a held-out stratified test set (80/20 split, `random_state=42`).
+  - Metrics tracked: Accuracy, Precision, Recall, F1-Score, Balanced Accuracy, and ROC-AUC.
+  - 5-Fold Stratified Cross-Validation on the training set to evaluate stability and variance.
+  - Confusion matrices and per-class classification reports.
+  - Combined Plotly ROC curve comparison across all seven classifiers.
+- **Decision Threshold Experiments:** Precision-recall-F1 tradeoff curves across classification probability thresholds from 0.10 to 0.90.
+- **Unsupervised Exploration:** K-Means clustering ($k=2$) fit on unlabeled features with 2D Principal Component Analysis (PCA) projection.
+- **Linear Regression Baseline:** Numeric target regression baseline illustrating boundary characteristics and separating classification from regression.
+- **Explainability & Feature Influence:** Extraction and visualization of model weights, odds ratios, and tree-based Gini feature importances.
+- **Interactive 12-Page Gradio Dashboard:** Full web-based analytical dashboard featuring responsive Plotly graphs and a real-time "What-If" sample simulator.
 
-## How to run
+---
 
-The notebook is designed to run in **Google Colab**.
+## 📊 Dataset Schema
 
-1. Open `Water_Potability_Analysis.ipynb` in Google Colab.
-2. Run the dependency-installation cell.
-3. Run the notebook cells from top to bottom.
-4. When prompted, upload `water_potability.csv`.
-5. Continue through the data validation, exploration, training, evaluation, clustering, and regression sections.
-6. Run the dashboard cell to launch the Gradio interface.
-7. Run the optional export cell to create the CSV output files.
+The model analyzes water samples based on nine physicochemical metrics from [`water_potability.csv`](file:///c:/Users/kiran/Downloads/Aqua-Sense/water_potability.csv):
 
-If the runtime is restarted, run the notebook from the beginning before launching the dashboard because it uses variables and trained models created by earlier cells.
+| Feature | Description | Reference Range / Units |
+|---|---|---|
+| `ph` | Acidity or alkalinity level of the water | 0 – 14 (WHO recommended: 6.5 – 8.5) |
+| `Hardness` | Capacity of water to precipitate soap | mg/L (Calcium & Magnesium salts) |
+| `Solids` | Total dissolved solids (TDS) | ppm / mg/L |
+| `Chloramines` | Disinfectant agent concentration | ppm |
+| `Sulfate` | Dissolved sulfate mineral concentration | mg/L |
+| `Conductivity` | Electrical conductivity | μS/cm |
+| `Organic_carbon` | Total organic carbon content (TOC) | ppm |
+| `Trihalomethanes` | Disinfection by-products (THMs) | μg/L |
+| `Turbidity` | Measure of light-emitting properties / clarity | NTU (Nephelometric Turbidity Units) |
+| `Potability` | **Target label**: `1` = Potable (Safe), `0` = Non-potable (Unsafe) | Binary |
 
-## Dashboard pages
+---
 
-1. Overview
-2. Logistic Regression
-3. SVM (RBF)
-4. K-Nearest Neighbors
-5. Decision Tree
-6. Linear Discriminant Analysis
-7. Quadratic Discriminant Analysis
-8. K-Means Clustering
-9. Linear Regression
-10. Model Comparison & Selection
-11. Explainability & Insights
+## 🛠️ Technology Stack
 
-## Evaluation approach
+- **Core Language:** Python 3.10+
+- **Environment:** Jupyter Notebook / Google Colab
+- **Data Manipulation:** `pandas`, `numpy`
+- **Machine Learning & Preprocessing:** `scikit-learn` (`Pipeline`, `GridSearchCV`, `SimpleImputer`, `StandardScaler`)
+- **Interactive Visualizations:** `plotly` (express & graph_objects)
+- **Static Plotting:** `matplotlib`, `seaborn`
+- **Interactive UI / Dashboard:** `gradio`
 
-The notebook uses a reproducible random seed (`42`) and a stratified 80/20 train/test split for classification. It also uses stratified 5-fold cross-validation on the training portion to inspect model stability. Results can vary if the dataset or model settings change, so use the generated metrics and plots rather than assuming one model is always best.
+---
 
-K-Means is used for unsupervised exploration, not as a potability classifier. Linear Regression is included as a separate baseline with the binary target treated as numeric; its outputs should not be interpreted as calibrated probabilities.
+## 🚀 How to Run
 
-## Exported files
+### Option 1: Running in Google Colab (Recommended)
 
-The optional export section creates:
+1. Open [`AquaSense.ipynb`](file:///c:/Users/kiran/Downloads/Aqua-Sense/AquaSense.ipynb) in **Google Colab**.
+2. Run **Section 1: Install required libraries** to install `gradio`, `plotly`, `scikit-learn`, `pandas`, `numpy`, `matplotlib`, and `seaborn`.
+3. Run **Section 2 & 3: Import libraries and upload dataset**. When prompted by the Colab upload widget, select [`water_potability.csv`](file:///c:/Users/kiran/Downloads/Aqua-Sense/water_potability.csv).
+4. Run all cells sequentially through data validation, EDA, model training, evaluation, clustering, and baseline comparisons.
+5. Launch **Section 17: Launch the interactive AquaSense dashboard** to run the 12-page Gradio UI directly within the notebook (or via the generated shareable link).
+6. (Optional) Run **Section 18: Export project results** to download the evaluation summary CSVs.
 
-- `aquasense_classifier_evaluation.csv`
-- `aquasense_cross_validation.csv`
-- `aquasense_threshold_experiments.csv`
-- `aquasense_prepared_dataset.csv`
+### Option 2: Running Locally
 
-The notebook prints the filenames after creating them. The download statements are commented out by default and can be enabled individually in Google Colab when needed.
+1. Clone this repository:
+   ```bash
+   git clone https://github.com/sycno15/AquaSense.git
+   cd AquaSense
+   ```
+2. Install required dependencies:
+   ```bash
+   pip install gradio plotly scikit-learn pandas numpy matplotlib seaborn jupyter
+   ```
+3. Start the Jupyter Notebook server:
+   ```bash
+   jupyter notebook AquaSense.ipynb
+   ```
+4. Run all notebook cells.
 
-## Limitations
+---
 
-- The models learn patterns in the supplied dataset and may not generalize to all water sources or conditions.
-- Metrics such as accuracy and F1-score do not establish that a prediction is safe for real-world use.
-- Feature influence is not proof of causation, and feature-importance measures are not directly comparable across every model.
-- The Linear Regression section is an educational baseline, not a replacement for classification or laboratory analysis.
+## 🖥️ Interactive Dashboard Breakdown
 
-## Team
+The integrated Gradio dashboard provides an 11-page guided exploration plus a dedicated Overview:
 
-- Kirtikumar Mishra
-- Vansh Mahalle
-- Soumya Gawande
-- Archit Deshpande
+1. **Overview:** Project summary, metric descriptions, dataset statistics, and quick-start instructions.
+2. **Logistic Regression:** Linear classification metrics, confusion matrix, threshold tuning, and feature odds ratios.
+3. **SVM (RBF):** Non-linear support vector machine performance and decision boundaries.
+4. **K-Nearest Neighbors:** Distance-weighted local neighborhood metrics and predictions.
+5. **Decision Tree:** Single decision-tree metrics and Gini feature importances.
+6. **Random Forest:** Hyperparameter-tuned ensemble evaluation with feature importance breakdown.
+7. **Linear Discriminant Analysis:** Generative linear boundary classification results.
+8. **Quadratic Discriminant Analysis:** Quadratic decision boundary results for differing class covariances.
+9. **K-Means Clustering:** Unsupervised cluster distributions and 2D PCA visual projections.
+10. **Linear Regression:** Numeric baseline analysis contrasting regression against classification.
+11. **Model Comparison & Selection:** Side-by-side leaderboard across all seven classifiers, multi-model ROC curves, and cross-validation stability scores.
+12. **Explainability & Insights:** Global feature influence summaries and interactive **"What-If"** sample prediction simulator.
+
+---
+
+## 📁 Output Artifacts
+
+When running the optional export cell, the following evaluation reports are generated:
+
+- `aquasense_classifier_evaluation.csv`: Test-set metrics (Accuracy, Precision, Recall, F1, Balanced Accuracy, ROC-AUC) across all 7 classifiers.
+- `aquasense_cross_validation.csv`: 5-fold stratified cross-validation mean and standard deviation scores.
+- `aquasense_threshold_experiments.csv`: Threshold sensitivity grid (0.10 to 0.90) for all probabilistic models.
+- `aquasense_prepared_dataset.csv`: Processed dataset with cleaned features and potability indicators.
+
+---
+
+## 📜 License & Academic Integrity
+
+This project is submitted as part of the academic curriculum for the Department of Computer Science & Engineering at **Ramdeobaba University, Nagpur**. It is intended strictly for academic, research, and educational purposes.
