@@ -51,9 +51,14 @@
 
 ---
 
-## 📊 Dataset Schema
+## 📊 Dataset & Schema
 
-The model analyzes water samples based on nine physicochemical metrics from [`water_potability.csv`](file:///c:/Users/kiran/Downloads/Aqua-Sense/water_potability.csv):
+The model analyzes water samples based on nine physicochemical water quality metrics.
+
+- **Dataset Source:** [Kaggle — Water Probability / Potability Dataset](https://www.kaggle.com/datasets/bsf23ooo354humaira/water-probability)
+- **File:** [`water_potability.csv`](water_potability.csv)
+
+### Feature Descriptions
 
 | Feature | Description | Reference Range / Units |
 |---|---|---|
